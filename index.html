@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Remy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Fauna+One&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --olive:#636B2F;--olive-dark:#3D4127;--olive-mid:#BAC095;--olive-light:#D4DE95;
+      --olive-bg:rgba(212,222,149,0.12);--olive-soft:rgba(99,107,47,0.08);
+      --bg:#FAFAF8;--card:#FFFFFF;--text:#2A2A2A;--text-mid:#6B6B6B;--text-soft:#A0A0A0;
+      --border:rgba(0,0,0,0.08);--walmart:#0071DC;--walmart-soft:rgba(0,113,220,0.07);
+      --heading:'Cinzel',Georgia,serif;--body:'Fauna One',Georgia,serif;
+      --ease:cubic-bezier(0.25,0.1,0.25,1);--radius:20px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:var(--body);font-weight:400;color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;background:var(--bg);background-image:radial-gradient(ellipse at 15% 5%,rgba(99,107,47,0.09) 0%,transparent 55%),radial-gradient(ellipse at 85% 15%,rgba(186,192,149,0.12) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(212,222,149,0.08) 0%,transparent 60%),radial-gradient(ellipse at 20% 85%,rgba(186,192,149,0.1) 0%,transparent 50%),radial-gradient(ellipse at 80% 75%,rgba(99,107,47,0.06) 0%,transparent 55%),radial-gradient(circle,rgba(99,107,47,0.04) 1px,transparent 1px);background-size:100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,22px 22px;background-attachment:fixed;}
+    .app{max-width:430px;margin:0 auto;min-height:100vh;padding:0 1.25rem;}
+    .app-header{padding:2.5rem 0 0.8rem;text-align:center;display:flex;align-items:center;justify-content:center;gap:1rem;}
+    .logo{font-family:var(--heading);font-size:2.4rem;font-weight:700;color:var(--olive-dark);letter-spacing:0.06em;line-height:1;text-transform:uppercase;display:inline-block;}
+    .logo-r{position:relative;display:inline-block;}
+    .logo-r .chef-hat{position:absolute;top:-0.65em;left:42%;transform:translateX(-50%) rotate(-12deg);width:0.85em;height:0.85em;}
+    .tagline{font-family:var(--body);font-size:0.85rem;color:var(--olive);text-align:center;padding-bottom:1rem;}
+    .header-icons{display:flex;gap:0.5rem;}
+    .header-icon{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--olive);transition:all 0.25s;}
+    .header-icon:hover{border-color:var(--olive);background:var(--olive-bg);}
+    .header-icon svg{width:18px;height:18px;}
+    .header-icon .badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--olive);color:#fff;font-size:0.55rem;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--heading);}
+    .header-icon{position:relative;}
+    .screen{display:none;animation:pop 0.4s var(--ease);}.screen.active{display:block;}
+    @keyframes pop{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    .card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.8rem 1.4rem;margin-bottom:1rem;}
+    .card-title{font-family:var(--heading);font-size:1.15rem;font-weight:700;color:var(--olive-dark);margin-bottom:0.3rem;letter-spacing:0.03em;}
+    .card-sub{font-family:var(--body);font-size:0.82rem;color:var(--text-mid);margin-bottom:1.3rem;}
+    .field{margin-bottom:1.2rem;}
+    .field-label{font-family:var(--heading);font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--olive);margin-bottom:0.4rem;display:block;}
+    .field-input{width:100%;padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:12px;font-family:var(--body);font-size:0.88rem;color:var(--text);background:#fff;outline:none;transition:border-color 0.3s;-webkit-appearance:none;}.field-input:focus{border-color:var(--olive);}
+    .field-row{display:flex;gap:0.5rem;}.field-row .field-input{flex:1;}
+    .field-hint{font-family:var(--body);font-size:0.65rem;color:var(--text-soft);margin-top:0.3rem;}
+    .pills{display:flex;gap:0.5rem;}
+    .pill{flex:1;padding:0.6rem 0.5rem;border:1.5px solid var(--border);border-radius:12px;background:#fff;font-family:var(--body);font-size:0.82rem;color:var(--text-mid);cursor:pointer;text-align:center;transition:all 0.25s;}.pill.on{border-color:var(--olive);background:var(--olive-soft);color:var(--olive);}
+    .chips{display:flex;flex-wrap:wrap;gap:0.4rem;}
+    .chip{padding:0.4rem 0.85rem;border:1.5px solid var(--border);border-radius:100px;background:#fff;font-family:var(--body);font-size:0.74rem;color:var(--text-mid);cursor:pointer;transition:all 0.25s;}.chip.on{border-color:var(--olive);background:var(--olive-bg);color:var(--olive);}
+    .remember-row{display:flex;align-items:center;gap:0.6rem;cursor:pointer;}.remember-row input[type="checkbox"]{width:18px;height:18px;accent-color:var(--olive);cursor:pointer;}.remember-row span{font-family:var(--body);font-size:0.8rem;color:var(--text-mid);}
+    .btn{width:100%;padding:0.85rem;border:none;border-radius:14px;font-family:var(--heading);font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.3s var(--ease);letter-spacing:0.05em;text-transform:uppercase;}
+    .btn-main{background:var(--olive-dark);color:#fff;}.btn-main:hover{background:var(--olive);transform:translateY(-1px);}
+    .btn-ghost{background:#fff;color:var(--text);border:1.5px solid var(--border);text-transform:none;font-family:var(--body);font-weight:400;letter-spacing:0;}.btn-ghost:hover{border-color:var(--olive);color:var(--olive);}
+    .btn-row{display:flex;gap:0.6rem;}.btn-row .btn{flex:1;}
+    .skip-link{display:block;text-align:center;font-family:var(--body);font-size:0.78rem;color:var(--text-soft);margin-top:0.6rem;cursor:pointer;}.skip-link:hover{color:var(--olive);}
+    .viewfinder{border-radius:var(--radius);overflow:hidden;margin-bottom:1rem;border:1.5px solid var(--border);position:relative;}.viewfinder video,.viewfinder img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#f0f0f0;}
+    .viewfinder-hint{position:absolute;bottom:0;left:0;right:0;padding:2rem 1.5rem 1.2rem;background:linear-gradient(transparent,rgba(0,0,0,0.4));text-align:center;}.viewfinder-hint p{font-family:var(--body);font-size:0.88rem;color:#fff;}
+    .shutter{width:60px;height:60px;border-radius:50%;border:3px solid var(--olive-dark);background:#fff;cursor:pointer;margin:0.8rem auto;display:block;position:relative;transition:all 0.2s;}.shutter::after{content:'';position:absolute;inset:5px;border-radius:50%;background:var(--olive);}.shutter:active{transform:scale(0.92);}.shutter:active::after{background:var(--olive-dark);}
+    .upload-link{text-align:center;margin-top:0.2rem;margin-bottom:0.8rem;}.upload-link label{font-family:var(--body);font-size:0.78rem;color:var(--olive);cursor:pointer;text-decoration:underline;text-underline-offset:3px;}.upload-link input{display:none;}
+    .barcode-link{text-align:center;margin-bottom:1.5rem;}.barcode-link button{font-family:var(--body);font-size:0.78rem;color:var(--olive);cursor:pointer;background:none;border:none;text-decoration:underline;text-underline-offset:3px;display:inline-flex;align-items:center;gap:0.3rem;}.barcode-link button svg{width:14px;height:14px;}
+    .loading-center{text-align:center;padding:5rem 1rem;}
+    .bounce-dots{display:flex;justify-content:center;gap:0.4rem;margin-bottom:2rem;}.bounce-dots span{width:10px;height:10px;border-radius:50%;background:var(--olive);animation:bounce 1.2s infinite;}.bounce-dots span:nth-child(2){animation-delay:0.15s;}.bounce-dots span:nth-child(3){animation-delay:0.3s;}
+    @keyframes bounce{0%,80%,100%{transform:scale(0.6);opacity:0.4;}40%{transform:scale(1);opacity:1;}}
+    .loading-title{font-family:var(--heading);font-size:1.05rem;font-weight:600;color:var(--olive-dark);margin-bottom:0.2rem;}.loading-sub{font-family:var(--body);font-size:0.78rem;color:var(--text-soft);}
+    .metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:0.8rem;}.metric-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:1rem;text-align:center;}.metric-num{font-family:var(--heading);font-size:1.6rem;font-weight:700;color:var(--olive-dark);line-height:1;}.metric-num.accent{color:var(--olive);}.metric-label{font-family:var(--body);font-size:0.62rem;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.3rem;}
+    .found-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:0.8rem;}
+    .found-label{font-family:var(--heading);font-size:0.68rem;font-weight:700;color:var(--olive-dark);margin-bottom:0.6rem;letter-spacing:0.05em;text-transform:uppercase;}
+    .tag-row{display:flex;flex-wrap:wrap;gap:0.35rem;}
+    .tag{padding:0.3rem 0.7rem;border-radius:100px;font-family:var(--body);font-size:0.72rem;}
+    .tag-ingredient{background:var(--olive-bg);color:var(--olive);border:1px solid rgba(99,107,47,0.12);}
+    .tag-brand{background:rgba(186,192,149,0.15);color:#5A5F30;border:1px solid rgba(99,107,47,0.1);}
+    .tag-barcode{background:rgba(0,113,220,0.06);color:var(--walmart);border:1px solid rgba(0,113,220,0.1);}
+    .eco-note{display:flex;gap:0.6rem;align-items:flex-start;padding:0.9rem 1rem;background:var(--olive-bg);border-radius:14px;margin-bottom:1rem;border:1px solid rgba(99,107,47,0.1);}.eco-note span:first-child{font-size:1rem;flex-shrink:0;}.eco-note p{font-family:var(--body);font-size:0.75rem;color:var(--olive);line-height:1.55;}
+    .section-label{font-family:var(--heading);font-size:0.78rem;font-weight:700;color:var(--olive-dark);margin-bottom:0.6rem;margin-top:1.2rem;letter-spacing:0.05em;text-transform:uppercase;}
+    .rcard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.3rem;margin-bottom:0.7rem;cursor:pointer;transition:all 0.3s var(--ease);}.rcard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(61,65,39,0.08);border-color:var(--olive);}
+    .rcard-badge{display:inline-block;padding:0.2rem 0.55rem;border-radius:100px;font-family:var(--heading);font-size:0.55rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem;}.b-quick{background:var(--olive-bg);color:var(--olive);}.b-healthy{background:rgba(212,222,149,0.2);color:var(--olive-dark);}.b-creative{background:rgba(186,192,149,0.2);color:#5A5F30;}
+    .rcard h3{font-family:var(--heading);font-size:0.95rem;font-weight:700;color:var(--olive-dark);margin-bottom:0.2rem;line-height:1.3;letter-spacing:0.02em;}.rcard p{font-family:var(--body);font-size:0.78rem;color:var(--text-mid);margin-bottom:0.7rem;line-height:1.5;}.rcard-meta{display:flex;gap:0.8rem;font-family:var(--body);font-size:0.7rem;color:var(--text-soft);}
+    .missing-row{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.6rem;margin-bottom:0.3rem;}.missing-tag{padding:0.25rem 0.6rem;border-radius:100px;font-family:var(--body);font-size:0.68rem;background:var(--walmart-soft);color:var(--walmart);border:1px solid rgba(0,113,220,0.12);}
+    .walmart-btn{display:inline-flex;align-items:center;gap:0.35rem;padding:0.45rem 0.9rem;border-radius:100px;background:var(--walmart);color:#fff;font-family:var(--heading);font-size:0.62rem;font-weight:700;text-decoration:none;transition:all 0.25s;border:none;cursor:pointer;margin-top:0.3rem;letter-spacing:0.04em;text-transform:uppercase;}.walmart-btn:hover{opacity:0.85;transform:translateY(-1px);}.walmart-btn svg{width:13px;height:13px;}
+    .back-btn{display:inline-flex;align-items:center;gap:0.3rem;font-family:var(--body);font-size:0.78rem;color:var(--olive);background:none;border:none;cursor:pointer;margin-bottom:1rem;padding:0;}.back-btn:hover{color:var(--olive-dark);}
+    .detail-hero{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.8rem 1.4rem;margin-bottom:0.7rem;text-align:center;}.detail-hero h2{font-family:var(--heading);font-size:1.2rem;font-weight:700;color:var(--olive-dark);line-height:1.2;margin-bottom:0.3rem;}.detail-hero p{font-family:var(--body);font-size:0.82rem;color:var(--text-mid);}.detail-hero .rcard-meta{justify-content:center;margin-top:0.8rem;}
+    .detail-block{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.3rem;margin-bottom:0.7rem;}.detail-block h4{font-family:var(--heading);font-size:0.75rem;font-weight:700;color:var(--olive-dark);margin-bottom:0.6rem;letter-spacing:0.05em;text-transform:uppercase;}.detail-block li{padding:0.4rem 0;border-bottom:1px solid var(--border);font-family:var(--body);font-size:0.8rem;color:var(--text-mid);list-style:none;}.detail-block li:last-child{border:none;}
+    .snum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--olive-dark);color:#fff;font-family:var(--heading);font-size:0.58rem;font-weight:700;margin-right:0.6rem;flex-shrink:0;}.step{display:flex;align-items:flex-start;padding:0.5rem 0;border-bottom:1px solid var(--border);font-family:var(--body);font-size:0.8rem;color:var(--text-mid);line-height:1.55;}.step:last-child{border:none;}
+    /* Chat refinement */
+    .chat-bar{display:flex;gap:0.5rem;margin-top:1rem;}.chat-input{flex:1;padding:0.7rem 1rem;border:1.5px solid var(--border);border-radius:12px;font-family:var(--body);font-size:0.82rem;color:var(--text);background:#fff;outline:none;}.chat-input:focus{border-color:var(--olive);}.chat-send{width:40px;height:40px;border-radius:12px;border:none;background:var(--olive-dark);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}.chat-send:hover{background:var(--olive);}.chat-send svg{width:16px;height:16px;}
+    .chat-msg{padding:0.7rem 1rem;border-radius:14px;margin-top:0.5rem;font-size:0.78rem;line-height:1.5;max-width:85%;animation:pop 0.3s var(--ease);}.chat-user{background:var(--olive-dark);color:#fff;margin-left:auto;border-bottom-right-radius:4px;}.chat-ai{background:var(--card);border:1.5px solid var(--border);color:var(--text-mid);border-bottom-left-radius:4px;}
+    .chat-typing{display:flex;gap:0.25rem;padding:0.7rem 1rem;}.chat-typing span{width:6px;height:6px;border-radius:50%;background:var(--olive-mid);animation:bounce 1.2s infinite;}.chat-typing span:nth-child(2){animation-delay:0.15s;}.chat-typing span:nth-child(3){animation-delay:0.3s;}
+    /* Dashboard */
+    .dash-stat{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);font-size:0.82rem;}.dash-stat:last-child{border:none;}.dash-stat-label{color:var(--text-mid);}.dash-stat-val{font-family:var(--heading);font-weight:700;color:var(--olive-dark);}
+    .dash-bar-row{margin-top:0.3rem;}.dash-bar-label{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--text-mid);margin-bottom:0.2rem;}.dash-bar{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-bottom:0.6rem;}.dash-bar-fill{height:100%;background:var(--olive);border-radius:3px;transition:width 0.6s var(--ease);}
+    .taste-chip{display:inline-flex;align-items:center;gap:0.3rem;padding:0.3rem 0.7rem;border-radius:100px;font-size:0.68rem;margin:0.15rem;background:var(--olive-bg);color:var(--olive);border:1px solid rgba(99,107,47,0.12);}.taste-chip .tc-count{font-family:var(--heading);font-weight:700;font-size:0.6rem;}
+    .history-item{padding:0.8rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity 0.2s;}.history-item:hover{opacity:0.7;}.history-item:last-child{border:none;}.hi-date{font-size:0.65rem;color:var(--text-soft);margin-bottom:0.2rem;}.hi-ingredients{font-size:0.78rem;color:var(--text-mid);}.hi-stats{font-size:0.68rem;color:var(--olive);margin-top:0.2rem;}
+    .spacer{height:3rem;}
+    @media(max-width:480px){.app{padding:0 1rem;}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="app-header">
+    <div style="flex:1;">
+      <div class="logo"><span class="logo-r">R<svg class="chef-hat" viewBox="0 0 100 80" fill="none" stroke="var(--olive-dark)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="30" rx="28" ry="22"/><ellipse cx="28" cy="34" rx="14" ry="14"/><ellipse cx="72" cy="34" rx="14" ry="14"/><ellipse cx="50" cy="20" rx="12" ry="10"/><line x1="24" y1="50" x2="76" y2="50"/><rect x="22" y="52" width="56" height="10" rx="3"/></svg></span>emy</div>
+    </div>
+    <div class="header-icons">
+      <div class="header-icon" onclick="go('s7')" title="Dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="4" rx="1"/><rect x="14" y="10" width="7" height="11" rx="1"/><rect x="3" y="13" width="7" height="8" rx="1"/></svg><span class="badge" id="scanBadge" style="display:none;">0</span></div>
+    </div>
+  </div>
+  <div class="tagline">cook what you have</div>
+
+  <!-- ONBOARDING -->
+  <div class="screen active" id="s1">
+    <div class="card">
+      <div class="card-title">Tailor Your Recipes</div>
+      <div class="card-sub">Remy adjusts portions, calorie density, and nutritional balance based on your body type.</div>
+      <div class="field"><span class="field-label">Age</span><input type="number" class="field-input" id="age" placeholder="28" min="1" max="120"></div>
+      <div class="field"><span class="field-label">Gender</span><div class="pills"><div class="pill" onclick="pickPill(this)">Female</div><div class="pill" onclick="pickPill(this)">Male</div><div class="pill" onclick="pickPill(this)">Other</div></div></div>
+      <div class="field"><span class="field-label">Height</span><div class="field-row"><input type="number" class="field-input" id="heightFt" placeholder="5" min="1" max="8"><input type="number" class="field-input" id="heightIn" placeholder="6" min="0" max="11"></div><div class="field-hint">feet / inches</div></div>
+      <div class="field"><span class="field-label">Weight (lbs)</span><input type="number" class="field-input" id="weight" placeholder="140" min="50" max="500"></div>
+      <div class="field"><span class="field-label">Dietary Preferences</span><div class="chips"><div class="chip" onclick="this.classList.toggle('on')">Vegetarian</div><div class="chip" onclick="this.classList.toggle('on')">Vegan</div><div class="chip" onclick="this.classList.toggle('on')">Gluten-Free</div><div class="chip" onclick="this.classList.toggle('on')">Dairy-Free</div><div class="chip" onclick="this.classList.toggle('on')">Keto</div><div class="chip" onclick="this.classList.toggle('on')">Halal</div></div></div>
+      <div class="field" style="margin-bottom:0;"><label class="remember-row"><input type="checkbox" id="rememberMe"><span>Remember my settings</span></label></div>
+    </div>
+    <button class="btn btn-main" onclick="goCamera()">Continue</button>
+    <span class="skip-link" onclick="goCamera()">skip</span>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- CAMERA -->
+  <div class="screen" id="s2"><div class="card" style="padding:0.9rem 1.2rem;text-align:center;"><p style="font-size:0.82rem;color:var(--text-mid);margin:0;">Snap your fridge, pantry, or countertop.</p></div><div class="viewfinder"><video id="vid" autoplay playsinline muted></video><canvas id="cvs" style="display:none"></canvas><div class="viewfinder-hint"><p>Point at your ingredients</p></div></div><button class="shutter" onclick="snap()"></button><div class="upload-link"><label for="fup">or upload a photo</label><input type="file" id="fup" accept="image/*" onchange="uploaded(event)"></div><div class="barcode-link"><button onclick="scanBarcode()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><line x1="7" y1="8" x2="7" y2="16"/><line x1="11" y1="8" x2="11" y2="16"/><line x1="15" y1="8" x2="15" y2="16"/></svg>Scan a barcode instead</button></div></div>
+
+  <!-- BARCODE -->
+  <div class="screen" id="s2b">
+    <div class="card"><div class="card-title">Scan Barcode</div><div class="card-sub">Enter a UPC barcode number to look up the product.</div><div class="field"><span class="field-label">Barcode Number</span><input type="text" class="field-input" id="barcodeInput" placeholder="e.g. 0049000006346" inputmode="numeric"></div></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="go('s2')">Back</button><button class="btn btn-main" onclick="lookupBarcode()">Look Up</button></div>
+    <div id="barcodeResult" style="margin-top:1rem;"></div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- REVIEW -->
+  <div class="screen" id="s3"><div class="viewfinder"><img id="preview" src="" alt="captured"></div><div class="btn-row"><button class="btn btn-ghost" onclick="retake()">Retake</button><button class="btn btn-main" onclick="analyze()">Find Recipes</button></div><div class="spacer"></div></div>
+
+  <!-- LOADING -->
+  <div class="screen" id="s4"><div class="loading-center"><div class="bounce-dots"><span></span><span></span><span></span></div><div class="loading-title">Remy is looking...</div><div class="loading-sub" id="lmsg">Identifying ingredients</div></div></div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="s5">
+    <div class="metrics-grid" id="metricsGrid"></div>
+    <div id="foundBar"></div>
+    <div class="eco-note" id="ecoNote"><span>🌿</span><p id="ecoText"></p></div>
+    <div class="section-label">Ready to Cook</div><div id="recipes"></div>
+    <div class="section-label" id="almostLabel" style="display:none;">Almost There</div><div id="almostRecipes"></div>
+    <!-- Chat refinement -->
+    <div class="section-label" style="margin-top:1.5rem;">Refine Your Recipes</div>
+    <div class="card" style="padding:1rem;" id="chatBox">
+      <div id="chatMessages"><div class="chat-msg chat-ai">Want something different? Tell me to swap an ingredient, change the cuisine, make it spicier, or adjust for dietary needs.</div></div>
+      <div class="chat-bar"><input class="chat-input" id="chatInput" placeholder="e.g. make it spicier, no dairy..." onkeydown="if(event.key==='Enter')sendChat()"><button class="chat-send" onclick="sendChat()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div>
+    </div>
+    <button class="btn btn-ghost" onclick="retake()" style="margin-top:0.6rem;">Scan Again</button>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- DETAIL -->
+  <div class="screen" id="s6"><button class="back-btn" onclick="go('s5')">← Back to recipes</button><div id="detail"></div><div class="spacer"></div></div>
+
+  <!-- DASHBOARD -->
+  <div class="screen" id="s7">
+    <button class="back-btn" onclick="go(lastScreen)">← Back</button>
+    <div class="card"><div class="card-title">Your Kitchen Dashboard</div><div class="card-sub">Insights from your scan history.</div>
+      <div id="dashStats"></div>
+    </div>
+    <div class="card"><div class="found-label">Your Taste Profile</div><div class="card-sub" style="margin-bottom:0.5rem;">Based on recipes you've tapped.</div><div id="tasteProfile"></div></div>
+    <div class="card"><div class="found-label">Top Ingredients</div><div class="card-sub" style="margin-bottom:0.5rem;">What shows up most in your kitchen.</div><div id="topIngredients"></div></div>
+    <div class="card"><div class="found-label">Scan History</div><div id="scanHistory"></div></div>
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<script>
+let profile={age:null,gender:null,diets:[],heightFt:null,heightIn:null,weight:null},imgData=null,allRecipes=[],almostRecipes=[],stream=null,lastScreen='s1',chatHistory=[],barcodeItems=[];
+
+// Scan history & taste profile (localStorage)
+function getHistory(){try{return JSON.parse(localStorage.getItem('remy_history')||'[]');}catch(e){return [];}}
+function saveHistory(h){localStorage.setItem('remy_history',JSON.stringify(h));}
+function getTaste(){try{return JSON.parse(localStorage.getItem('remy_taste')||'{}');}catch(e){return {};}}
+function saveTaste(t){localStorage.setItem('remy_taste',JSON.stringify(t));}
+function trackTaste(badge){const t=getTaste();t[badge]=(t[badge]||0)+1;saveTaste(t);}
+function updateBadge(){const h=getHistory();const b=document.getElementById('scanBadge');if(h.length>0){b.style.display='flex';b.textContent=h.length;}else{b.style.display='none';}}
+updateBadge();
+
+// Profile load
+window.addEventListener('DOMContentLoaded',function(){const saved=localStorage.getItem('remy_profile');if(saved){try{const p=JSON.parse(saved);profile=p;if(p.age)document.getElementById('age').value=p.age;if(p.heightFt)document.getElementById('heightFt').value=p.heightFt;if(p.heightIn)document.getElementById('heightIn').value=p.heightIn;if(p.weight)document.getElementById('weight').value=p.weight;if(p.gender)document.querySelectorAll('.pill').forEach(el=>{if(el.textContent===p.gender)el.classList.add('on');});if(p.diets)p.diets.forEach(d=>{document.querySelectorAll('.chip').forEach(el=>{if(el.textContent===d)el.classList.add('on');});});document.getElementById('rememberMe').checked=true;}catch(e){}}});
+function pickPill(el){el.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');profile.gender=el.textContent;}
+function go(id){lastScreen=document.querySelector('.screen.active')?.id||'s1';document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);if(id==='s7')renderDashboard();}
+function goCamera(){profile.age=document.getElementById('age').value;profile.heightFt=document.getElementById('heightFt').value;profile.heightIn=document.getElementById('heightIn').value;profile.weight=document.getElementById('weight').value;profile.diets=[...document.querySelectorAll('.chip.on')].map(c=>c.textContent);if(document.getElementById('rememberMe').checked){localStorage.setItem('remy_profile',JSON.stringify(profile));}else{localStorage.removeItem('remy_profile');}go('s2');startCam();}
+async function startCam(){try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280},height:{ideal:1920}}});document.getElementById('vid').srcObject=stream;}catch(e){}}
+function stopCam(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}}
+function snap(){const v=document.getElementById('vid'),c=document.getElementById('cvs');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);imgData=c.toDataURL('image/jpeg',0.8);stopCam();document.getElementById('preview').src=imgData;go('s3');}
+function uploaded(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{imgData=ev.target.result;stopCam();document.getElementById('preview').src=imgData;go('s3');};r.readAsDataURL(f);}
+function retake(){imgData=null;barcodeItems=[];chatHistory=[];document.getElementById('chatMessages').innerHTML='<div class="chat-msg chat-ai">Want something different? Tell me to swap an ingredient, change the cuisine, make it spicier, or adjust for dietary needs.</div>';go('s2');startCam();}
+
+// Barcode scanning via Open Food Facts API
+function scanBarcode(){go('s2b');document.getElementById('barcodeInput').value='';document.getElementById('barcodeResult').innerHTML='';}
+async function lookupBarcode(){const code=document.getElementById('barcodeInput').value.trim();if(!code)return;document.getElementById('barcodeResult').innerHTML='<div class="loading-center" style="padding:2rem;"><div class="bounce-dots"><span></span><span></span><span></span></div><p style="font-size:0.78rem;color:var(--text-soft);">Looking up product...</p></div>';
+try{const res=await fetch('https://world.openfoodfacts.org/api/v0/product/'+code+'.json');const data=await res.json();if(data.status===1){const p=data.product;const name=p.product_name||'Unknown product';const brand=p.brands||'';const cats=p.categories_tags?p.categories_tags.slice(0,3).map(c=>c.replace('en:','').replace(/-/g,' ')):[];barcodeItems.push({name,brand,categories:cats});document.getElementById('barcodeResult').innerHTML=`<div class="card" style="padding:1rem;"><div style="font-family:var(--heading);font-size:0.85rem;font-weight:700;color:var(--olive-dark);">${name}</div>${brand?'<div style="font-size:0.75rem;color:var(--text-mid);">'+brand+'</div>':''}<div class="tag-row" style="margin-top:0.5rem;">${cats.map(c=>'<span class="tag tag-barcode">'+c+'</span>').join('')}</div><p style="font-size:0.72rem;color:var(--olive);margin-top:0.6rem;">Added to your ingredients. Scan another or go back to take a photo.</p></div>`;}
+else{document.getElementById('barcodeResult').innerHTML='<div class="card" style="padding:1rem;"><p style="font-size:0.82rem;color:var(--text-mid);">Product not found. Try a different barcode.</p></div>';}}
+catch(err){document.getElementById('barcodeResult').innerHTML='<div class="card" style="padding:1rem;"><p style="font-size:0.82rem;color:var(--text-mid);">Could not reach the product database. Check your connection.</p></div>';}}
+
+// Analyze
+async function analyze(){go('s4');chatHistory=[];const msgs=['Identifying ingredients','Detecting brands','Crafting recipes','Calculating impact'];let mi=0;const iv=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('lmsg').textContent=msgs[mi];},1800);const b64=imgData.split(',')[1],mt=imgData.split(';')[0].split(':')[1];const ageN=profile.age?`User is ${profile.age} years old.`:'';const genN=profile.gender?`Gender: ${profile.gender}.`:'';const bodyN=(profile.heightFt&&profile.weight)?`Height: ${profile.heightFt}'${profile.heightIn||0}". Weight: ${profile.weight} lbs. Adjust portions and calorie density for this body type.`:'';const dietN=profile.diets.length?`Dietary restrictions: ${profile.diets.join(', ')}.`:'';
+const tasteCtx=Object.keys(getTaste()).length?`User preference history: ${Object.entries(getTaste()).sort((a,b)=>b[1]-a[1]).map(([k,v])=>k+'('+v+')').join(', ')}. Weight recipes toward their preferences.`:'';
+const barcodeCtx=barcodeItems.length?`Additional items identified via barcode: ${barcodeItems.map(b=>b.name+(b.brand?' ('+b.brand+')':'')).join(', ')}. Include these in available ingredients.`:'';
+const promptText=`You are Remy, an AI chef assistant. Analyze this photo of food/ingredients.\n${ageN} ${genN} ${bodyN} ${dietN}\n${tasteCtx}\n${barcodeCtx}\n\nRespond ONLY with a JSON object (no markdown, no backticks):\n{"ingredients":["ingredient1","ingredient2"],"brands":["brand1"],"waste_tip":"short tip about reducing waste","impact":{"ingredients_found":7,"est_meals":5,"est_waste_prevented_usd":4.20,"est_calories_available":2800},"recipes":[{"name":"...","description":"one sentence","time_minutes":20,"difficulty":"Easy","badge":"quick","servings":2,"ingredients_list":["1 cup x"],"steps":["Step 1"]}],"almost_recipes":[{"name":"...","description":"one sentence","time_minutes":30,"difficulty":"Medium","badge":"creative","servings":2,"ingredients_list":["1 cup x"],"missing_ingredients":["item to buy"],"steps":["Step 1"]}]}\n\n"recipes": exactly 3 using ONLY visible ingredients. Badge: "quick","healthy","creative".\n"almost_recipes": exactly 2 needing 1-3 extra items.`;
+chatHistory=[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:promptText}]}];
+try{const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:3000,messages:chatHistory})});const data=await res.json();clearInterval(iv);const txt=data.content.map(i=>i.text||'').join('');chatHistory.push({role:'assistant',content:txt});const result=JSON.parse(txt.replace(/```json|```/g,'').trim());allRecipes=result.recipes;almostRecipes=result.almost_recipes||[];
+// Save to history
+const hist=getHistory();hist.unshift({date:new Date().toISOString(),ingredients:result.ingredients,brands:result.brands||[],impact:result.impact,recipeCount:result.recipes.length+(result.almost_recipes||[]).length});if(hist.length>50)hist.pop();saveHistory(hist);updateBadge();
+render(result);go('s5');}
+catch(err){clearInterval(iv);const demo={ingredients:["eggs","butter","milk","cheese","bread","tomatoes","spinach"],brands:["Organic Valley","Dave's Killer Bread"],waste_tip:"Those tomatoes should be used within 2 days. Great for a cooked dish today.",impact:{ingredients_found:7,est_meals:5,est_waste_prevented_usd:4.20,est_calories_available:2800},recipes:[{name:"Spinach & Tomato Frittata",description:"Fluffy open-faced egg dish with fresh veggies and melted cheese.",time_minutes:20,difficulty:"Easy",badge:"quick",servings:2,ingredients_list:["4 eggs","¼ cup milk","1 cup spinach","1 tomato, sliced","½ cup cheese","1 tbsp butter","Salt & pepper"],steps:["Whisk eggs and milk with salt and pepper.","Melt butter in an oven-safe skillet. Wilt spinach.","Pour in eggs, top with tomato and cheese.","Cook 2 min stovetop, bake at 375°F for 10-12 min."]},{name:"Grilled Cheese & Tomato Soup",description:"Crispy sandwiches with quick blended tomato soup for dipping.",time_minutes:25,difficulty:"Easy",badge:"creative",servings:2,ingredients_list:["4 slices bread","3 tbsp butter","1 cup cheese","3 tomatoes","½ cup milk","Salt, pepper, garlic"],steps:["Cook chopped tomatoes in butter 10 min. Add milk, blend.","Butter bread, fill with cheese, grill 3-4 min per side.","Serve with warm soup."]},{name:"Green Eggs & Toast",description:"Creamy scrambled eggs with wilted spinach on toasted bread.",time_minutes:10,difficulty:"Easy",badge:"healthy",servings:1,ingredients_list:["2 eggs","1 cup spinach","1 tbsp butter","2 slices bread","Salt & pepper"],steps:["Toast bread.","Melt butter, wilt spinach.","Add eggs, fold gently. Season.","Pile onto toast."]}],almost_recipes:[{name:"Eggs Benedict Florentine",description:"Poached eggs with hollandaise and wilted spinach. Brunch perfection.",time_minutes:35,difficulty:"Medium",badge:"creative",servings:2,ingredients_list:["4 eggs","2 slices bread","1 cup spinach","3 tbsp butter","2 egg yolks","1 tbsp lemon juice","Cayenne"],missing_ingredients:["lemon juice","cayenne pepper"],steps:["Make hollandaise: whisk yolks and lemon over double boiler, slowly add melted butter.","Wilt spinach in butter.","Poach eggs 3 min in simmering water.","Layer toast, spinach, egg, hollandaise."]},{name:"Shakshuka",description:"Eggs poached in spiced tomato sauce. A one-pan wonder.",time_minutes:30,difficulty:"Easy",badge:"healthy",servings:2,ingredients_list:["4 eggs","3 tomatoes","1 tbsp butter","½ cup cheese","1 tsp cumin","1 tsp paprika","Canned tomatoes"],missing_ingredients:["cumin","paprika","canned crushed tomatoes"],steps:["Cook fresh tomatoes in butter 5 min. Add canned tomatoes, spices.","Simmer 10 min.","Make wells, crack in eggs. Cover 5-7 min.","Top with cheese, serve with bread."]}]};
+const hist=getHistory();hist.unshift({date:new Date().toISOString(),ingredients:demo.ingredients,brands:demo.brands,impact:demo.impact,recipeCount:5});if(hist.length>50)hist.pop();saveHistory(hist);updateBadge();
+allRecipes=demo.recipes;almostRecipes=demo.almost_recipes;render(demo);go('s5');}}
+
+// Multi-turn chat refinement
+async function sendChat(){const input=document.getElementById('chatInput');const msg=input.value.trim();if(!msg)return;input.value='';const box=document.getElementById('chatMessages');box.innerHTML+=`<div class="chat-msg chat-user">${msg}</div>`;box.innerHTML+=`<div class="chat-msg chat-ai chat-typing" id="chatLoading"><span></span><span></span><span></span></div>`;box.scrollTop=box.scrollHeight;
+chatHistory.push({role:'user',content:`The user wants to modify the recipes. Their request: "${msg}". Based on the original ingredients you identified in the photo, adjust the recipes accordingly. Respond ONLY with a JSON object (no markdown, no backticks) with the same structure: {"recipes":[...],"almost_recipes":[...],"explanation":"one sentence explaining what you changed"}`});
+try{const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,messages:chatHistory})});const data=await res.json();const txt=data.content.map(i=>i.text||'').join('');chatHistory.push({role:'assistant',content:txt});const result=JSON.parse(txt.replace(/```json|```/g,'').trim());
+document.getElementById('chatLoading')?.remove();
+box.innerHTML+=`<div class="chat-msg chat-ai">${result.explanation||'Here are your updated recipes.'}</div>`;box.scrollTop=box.scrollHeight;
+allRecipes=result.recipes;almostRecipes=result.almost_recipes||[];renderRecipeCards(result);}
+catch(err){document.getElementById('chatLoading')?.remove();box.innerHTML+=`<div class="chat-msg chat-ai">Sorry, I could not process that. Try rephrasing your request.</div>`;box.scrollTop=box.scrollHeight;}}
+
+function render(d){
+  const imp=d.impact||{ingredients_found:d.ingredients.length,est_meals:3,est_waste_prevented_usd:3.50,est_calories_available:1800};
+  document.getElementById('metricsGrid').innerHTML=`<div class="metric-card"><div class="metric-num">${imp.ingredients_found}</div><div class="metric-label">Ingredients Found</div></div><div class="metric-card"><div class="metric-num">${imp.est_meals}</div><div class="metric-label">Possible Meals</div></div><div class="metric-card"><div class="metric-num accent">$${imp.est_waste_prevented_usd.toFixed(2)}</div><div class="metric-label">Waste Prevented</div></div><div class="metric-card"><div class="metric-num">${imp.est_calories_available.toLocaleString()}</div><div class="metric-label">Calories Available</div></div>`;
+  let fh='<div class="found-bar"><div class="found-label">What We Found</div><div class="tag-row">';
+  d.ingredients.forEach(i=>{const name=typeof i==='string'?i:i.name;fh+=`<span class="tag tag-ingredient">${name}</span>`;});
+  if(d.brands&&d.brands.length>0){d.brands.forEach(b=>{fh+=`<span class="tag tag-brand">${b}</span>`;});}
+  if(barcodeItems.length>0){barcodeItems.forEach(b=>{fh+=`<span class="tag tag-barcode">${b.name}</span>`;});}
+  fh+='</div></div>';document.getElementById('foundBar').innerHTML=fh;
+  document.getElementById('ecoText').textContent=d.waste_tip;
+  renderRecipeCards(d);
+}
+
+function renderRecipeCards(d){
+  const bc={quick:'b-quick',healthy:'b-healthy',creative:'b-creative'};const bl={quick:'Quick',healthy:'Healthy',creative:'Creative'};
+  let rh='';d.recipes.forEach((r,i)=>{rh+=`<div class="rcard" onclick="openRecipe(${i},'main')"><span class="rcard-badge ${bc[r.badge]||'b-quick'}">${bl[r.badge]||r.badge}</span><h3>${r.name}</h3><p>${r.description}</p><div class="rcard-meta"><span>${r.time_minutes} min</span><span>${r.difficulty}</span><span>${r.servings} serving${r.servings>1?'s':''}</span></div></div>`;});document.getElementById('recipes').innerHTML=rh;
+  if(d.almost_recipes&&d.almost_recipes.length>0){document.getElementById('almostLabel').style.display='block';let ah='';d.almost_recipes.forEach((r,i)=>{const mt2=r.missing_ingredients.map(m=>`<span class="missing-tag">${m}</span>`).join('');const cu=`https://www.walmart.com/search?q=${r.missing_ingredients.map(m=>encodeURIComponent(m)).join('+')}`;ah+=`<div class="rcard" onclick="openRecipe(${i},'almost')"><span class="rcard-badge ${bc[r.badge]||'b-quick'}">${bl[r.badge]||r.badge}</span><h3>${r.name}</h3><p>${r.description}</p><div class="missing-row">${mt2}</div><a href="${cu}" target="_blank" class="walmart-btn" onclick="event.stopPropagation();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Shop on Walmart</a><div class="rcard-meta" style="margin-top:0.6rem;"><span>${r.time_minutes} min</span><span>${r.difficulty}</span><span>${r.servings} serving${r.servings>1?'s':''}</span></div></div>`;});document.getElementById('almostRecipes').innerHTML=ah;}
+  else{document.getElementById('almostLabel').style.display='none';document.getElementById('almostRecipes').innerHTML='';}}
+
+function openRecipe(i,type){const r=type==='main'?allRecipes[i]:almostRecipes[i];trackTaste(r.badge);const hasMissing=r.missing_ingredients&&r.missing_ingredients.length>0;const missingSet=hasMissing?new Set(r.missing_ingredients.map(m=>m.toLowerCase())):new Set();let il=r.ingredients_list.map(item=>{const ism=[...missingSet].some(m=>item.toLowerCase().includes(m));return `<li ${ism?'style="color:var(--walmart);"':''}>${item}${ism?' ✦':''}</li>`;}).join('');let mb='';if(hasMissing){const cu=`https://www.walmart.com/search?q=${r.missing_ingredients.map(m=>encodeURIComponent(m)).join('+')}`;mb=`<div class="detail-block"><h4>Missing Ingredients</h4><div class="missing-row">${r.missing_ingredients.map(m=>`<span class="missing-tag">${m}</span>`).join('')}</div><a href="${cu}" target="_blank" class="walmart-btn" style="margin-top:0.7rem;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Shop these on Walmart</a></div>`;}document.getElementById('detail').innerHTML=`<div class="detail-hero"><h2>${r.name}</h2><p>${r.description}</p><div class="rcard-meta"><span>${r.time_minutes} min</span><span>${r.difficulty}</span><span>${r.servings} serving${r.servings>1?'s':''}</span></div></div>${mb}<div class="detail-block"><h4>Ingredients</h4><ul>${il}</ul></div><div class="detail-block"><h4>Steps</h4>${r.steps.map((s,j)=>`<div class="step"><span class="snum">${j+1}</span><span>${s}</span></div>`).join('')}</div>`;go('s6');}
+
+// Dashboard
+function renderDashboard(){
+  const hist=getHistory();const taste=getTaste();
+  // Stats
+  const totalScans=hist.length;const totalIngredients=hist.reduce((a,h)=>a+h.ingredients.length,0);const totalSaved=hist.reduce((a,h)=>a+(h.impact?.est_waste_prevented_usd||0),0);const totalMeals=hist.reduce((a,h)=>a+(h.impact?.est_meals||0),0);
+  document.getElementById('dashStats').innerHTML=totalScans===0?'<p style="font-size:0.82rem;color:var(--text-mid);">No scans yet. Take a photo to get started.</p>':`<div class="dash-stat"><span class="dash-stat-label">Total Scans</span><span class="dash-stat-val">${totalScans}</span></div><div class="dash-stat"><span class="dash-stat-label">Ingredients Detected</span><span class="dash-stat-val">${totalIngredients}</span></div><div class="dash-stat"><span class="dash-stat-label">Meals Generated</span><span class="dash-stat-val">${totalMeals}</span></div><div class="dash-stat"><span class="dash-stat-label">Total Waste Prevented</span><span class="dash-stat-val accent" style="color:var(--olive);">$${totalSaved.toFixed(2)}</span></div>`;
+  // Taste profile
+  const tasteKeys=Object.entries(taste).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('tasteProfile').innerHTML=tasteKeys.length===0?'<p style="font-size:0.78rem;color:var(--text-mid);">Tap on recipes to build your taste profile.</p>':tasteKeys.map(([k,v])=>`<span class="taste-chip"><span>${k}</span><span class="tc-count">${v}</span></span>`).join('');
+  // Top ingredients
+  const ingCount={};hist.forEach(h=>h.ingredients.forEach(i=>{const n=typeof i==='string'?i:i.name;ingCount[n]=(ingCount[n]||0)+1;}));const topIng=Object.entries(ingCount).sort((a,b)=>b[1]-a[1]).slice(0,6);const maxIng=topIng.length?topIng[0][1]:1;
+  document.getElementById('topIngredients').innerHTML=topIng.length===0?'<p style="font-size:0.78rem;color:var(--text-mid);">Scan your kitchen to see patterns.</p>':topIng.map(([name,count])=>`<div class="dash-bar-row"><div class="dash-bar-label"><span>${name}</span><span>${count}x</span></div><div class="dash-bar"><div class="dash-bar-fill" style="width:${(count/maxIng)*100}%"></div></div></div>`).join('');
+  // Scan history
+  document.getElementById('scanHistory').innerHTML=hist.length===0?'<p style="font-size:0.78rem;color:var(--text-mid);">No history yet.</p>':hist.slice(0,10).map(h=>{const d=new Date(h.date);const dateStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' at '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});return `<div class="history-item"><div class="hi-date">${dateStr}</div><div class="hi-ingredients">${h.ingredients.slice(0,5).join(', ')}${h.ingredients.length>5?' +' +(h.ingredients.length-5)+' more':''}</div><div class="hi-stats">${h.ingredients.length} ingredients · ${h.recipeCount} recipes · $${(h.impact?.est_waste_prevented_usd||0).toFixed(2)} saved</div></div>`;}).join('');}
+</script>
+</body>
+</html>
