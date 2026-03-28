@@ -220,8 +220,15 @@ render(demo);go('s5');}}
 
 // Multi-turn chat refinement
 async function sendChat(){const input=document.getElementById('chatInput');const msg=input.value.trim();if(!msg)return;input.value='';const box=document.getElementById('chatMessages');box.innerHTML+=`<div class="chat-msg chat-user">${msg}</div>`;box.innerHTML+=`<div class="chat-msg chat-ai chat-typing" id="chatLoading"><span></span><span></span><span></span></div>`;box.scrollTop=box.scrollHeight;
-chatHistory.push({role:'user',content:`The user wants to modify the recipes. Their request: "${msg}". Based on the original ingredients you identified in the photo, adjust the recipes accordingly. Respond ONLY with a JSON object (no markdown, no backticks) with the same structure: {"recipes":[...],"almost_recipes":[...],"explanation":"one sentence explaining what you changed"}`});
-try{const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,messages:chatHistory})});const data=await res.json();const txt=data.content.map(i=>i.text||'').join('');chatHistory.push({role:'assistant',content:txt});const result=JSON.parse(txt.replace(/```json|```/g,'').trim());
+// Build a simplified history without the base64 image for follow-ups
+const ingredients=allRecipes.length?allRecipes.map(r=>r.ingredients_list).flat().join(', '):'eggs, butter, milk, cheese, bread, tomatoes, spinach';
+const currentRecipes=JSON.stringify({recipes:allRecipes,almost_recipes:almostRecipes});
+const chatMessages=[
+  {role:'user',content:`I have these ingredients: ${ingredients}. Here are my current recipes: ${currentRecipes}`},
+  {role:'assistant',content:'I have your ingredients and current recipes ready. What would you like me to change?'},
+  {role:'user',content:`The user wants to modify the recipes. Their request: "${msg}". Adjust the recipes accordingly. Respond ONLY with a JSON object (no markdown, no backticks): {"recipes":[{"name":"...","description":"one sentence","time_minutes":20,"difficulty":"Easy","badge":"quick","servings":2,"ingredients_list":["1 cup x"],"steps":["Step 1"]}],"almost_recipes":[{"name":"...","description":"one sentence","time_minutes":30,"difficulty":"Medium","badge":"creative","servings":2,"ingredients_list":["1 cup x"],"missing_ingredients":["item"],"steps":["Step 1"]}],"explanation":"one sentence explaining what you changed"}`}
+];
+try{const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,messages:chatMessages})});const data=await res.json();const txt=data.content.map(i=>i.text||'').join('');const result=JSON.parse(txt.replace(/```json|```/g,'').trim());
 document.getElementById('chatLoading')?.remove();
 box.innerHTML+=`<div class="chat-msg chat-ai">${result.explanation||'Here are your updated recipes.'}</div>`;box.scrollTop=box.scrollHeight;
 allRecipes=result.recipes;almostRecipes=result.almost_recipes||[];renderRecipeCards(result);}
